@@ -1,26 +1,537 @@
 @import "tailwindcss";
+@source "../**/*.{js,ts,jsx,tsx,mdx}";
 
+/* Root Variables for Light Theme */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff8f0; /* Cream */
+  --foreground: #4a2e2b; /* Dark Plum */
+
+  /* Accents */
+  --accent-light-pink: #f8d7da;
+  --accent-soft-rose: #f5b6b8;
+  --white: #ffffff;
+
+  /* Fonts */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Open Sans", sans-serif;
+
+  /* UI Colors */
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+
+  /* Gradients & Pastels (Light Mode Cute Colors) */
+  --gradient-pink: #fdf2f8;
+  --gradient-cream: #fefbf3;
+  --gradient-blue: #f0f9ff;
+  --pastel-pink: #fce7f3;
+  --pastel-blue: #dbeafe;
+  --pastel-purple: #e9d5ff;
+  --pastel-green: #d1fae5;
+  --pastel-yellow: #fef3c7;
+  --pastel-orange: #fed7aa;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark Mode Variables */
+.dark {
+  --background: #0b1220; /* deep navy */
+  --foreground: #eef2ff; /* soft off-white */
+
+  /* Cards & Popovers */
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* Primary & Secondary */
+  --primary: #f0abfc; /* pink-300 */
+  --primary-foreground: #0f1224;
+  --secondary: #111827; /* slate-900 */
+  --secondary-foreground: #f9fafb;
+
+  /* Muted & Accent */
+  --muted: #1f2937; /* slate-800 */
+  --muted-foreground: #cbd5e1; /* slate-300 */
+  --accent: #312e81; /* indigo-900 */
+  --accent-foreground: #f5d0fe; /* pink-200 */
+
+  /* Destructive */
+  --destructive: #9f1239; /* rose-900 */
+  --destructive-foreground: #fee2e2; /* rose-100 */
+
+  /* Borders & Inputs */
+  --border: #374151; /* slate-700 */
+  --input: #0b1220;
+  --input-background: #0f172a; /* slate-950 */
+  --switch-background: #334155; /* slate-700 */
+  --ring: #7c3aed; /* violet-600 */
+
+  /* Accent Variants (Muted for Dark Mode) */
+  --accent-light-pink: #f0abfc; /* pink-300 */
+  --accent-soft-rose: #e879f9; /* fuchsia-400 */
+  --white: #e5e7eb;
+
+  /* Gradients (Muted Dark Versions) */
+  --gradient-pink: #1b1530; /* indigo with pink tint */
+  --gradient-cream: #0b1220; /* deep navy */
+  --gradient-blue: #0f1a2b; /* blue-navy */
+
+  /* Pastel Palette (Muted Dark Versions) */
+  --pastel-pink: #4c1d95; /* violet-900 */
+  --pastel-blue: #1e293b; /* slate-800 */
+  --pastel-purple: #3b0764; /* purple-950 */
+  --pastel-green: #064e3b; /* emerald-900 */
+  --pastel-yellow: #4a044e; /* fuchsia-950 */
+  --pastel-orange: #3f0a3a; /* magenta-ish deep */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+/* Base Styles */
+
+/* Tailwind Theme Layer */
+@layer base {
+  body {
+    background: linear-gradient(
+      135deg,
+      var(--gradient-pink) 0%,
+      var(--gradient-cream) 50%,
+      var(--gradient-blue) 100%
+    );
+    background-attachment: fixed;
+    @apply text-[var(--foreground)] font-sans transition-colors duration-300;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+    color: var(--accent-soft-rose);
+  }
+
+  a:hover {
+    color: var(--accent-light-pink);
+  }
+
+  button {
+    @apply px-4 py-2 rounded-md font-semibold transition-all;
+    background-color: var(--accent-soft-rose);
+    color: var(--white);
+  }
+
+  button:hover {
+    background-color: var(--accent-light-pink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 }
 
-body {
-  background: var(--background);
+/* Component Styles */
+
+@layer components {
+  /* Universal card content styling for all sections */
+  .card-content {
+    @apply space-y-4 p-6 rounded-2xl shadow-md transition-colors duration-300 
+          bg-white/70 dark:bg-gray-800/50 backdrop-blur-sm border border-pink-200/40 dark:border-pink-300/30;
+  }
+
+  /* Headings */
+  .card-content h3 {
+    @apply text-4xl font-bold text-purple-700 dark:text-pink-200 drop-shadow-sm;
+  }
+
+  .card-content h4 {
+    @apply text-lg font-semibold text-pink-600 dark:text-pink-300;
+  }
+
+  /* Paragraphs */
+  .card-content p {
+    @apply text-sm text-gray-700 dark:text-gray-200 leading-relaxed;
+  }
+
+  /* Lists */
+  .card-content ul {
+    @apply list-disc list-inside space-y-1;
+  }
+
+  .card-content li {
+    @apply text-gray-700 dark:text-gray-200 text-sm pl-1;
+  }
+
+  /* Links */
+  .card-content a {
+    @apply text-pink-600 dark:text-pink-200 underline hover:text-pink-800 dark:hover:text-pink-100 transition-colors duration-200;
+  }
+
+  /* span */
+  .card-content span {
+    @apply text-pink-600 font-normal;
+  }
+
+  /* Pastel skill tags */
+  .skill-tag {
+    @apply inline-block px-3 py-1 text-xs font-medium rounded-full border transition-colors duration-200;
+  }
+
+  /* Rotating pastel colors for multiple tags */
+  .skill-tag:nth-child(6n + 1) {
+    @apply bg-pink-200/50 text-pink-800 dark:bg-pink-200/20 dark:text-pink-100 border-pink-300/30;
+  }
+  .skill-tag:nth-child(6n + 2) {
+    @apply bg-purple-200/50 text-purple-800 dark:bg-purple-200/20 dark:text-purple-100 border-purple-300/30;
+  }
+  .skill-tag:nth-child(6n + 3) {
+    @apply bg-blue-200/50 text-blue-800 dark:bg-blue-200/20 dark:text-blue-100 border-blue-300/30;
+  }
+  .skill-tag:nth-child(6n + 4) {
+    @apply bg-green-200/50 text-green-800 dark:bg-green-200/20 dark:text-green-100 border-green-300/30;
+  }
+  .skill-tag:nth-child(6n + 5) {
+    @apply bg-yellow-200/50 text-yellow-800 dark:bg-yellow-200/20 dark:text-yellow-100 border-yellow-300/30;
+  }
+  .skill-tag:nth-child(6n) {
+    @apply bg-teal-200/50 text-teal-800 dark:bg-teal-200/20 dark:text-teal-100 border-teal-300/30;
+  }
+
+  /* Optional back link style for bottom links */
+  .back-link {
+    @apply inline-flex items-center gap-1 text-pink-600 dark:text-pink-200 
+          hover:text-pink-800 dark:hover:text-pink-100 transition-all duration-200;
+  }
+
+  .back-link .arrow {
+    @apply inline-block transition-transform duration-200 group-hover:translate-x-1;
+  }
+
+  .btn-primary {
+    @apply px-5 py-2 rounded-md font-semibold text-white bg-[var(--accent-soft-rose)] 
+           hover:bg-[var(--accent-light-pink)] hover:shadow-md transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply px-5 py-2 rounded-md font-semibold text-[var(--foreground)] bg-[var(--accent-light-pink)] 
+           hover:bg-[var(--accent-soft-rose)] hover:text-white hover:shadow-md transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply px-5 py-2 rounded-md font-medium border border-[var(--accent-soft-rose)]
+           text-[var(--accent-soft-rose)] hover:bg-[var(--accent-soft-rose)] 
+           hover:text-white transition-all duration-200;
+  }
+}
+
+.profile-img {
+  @apply object-cover;
+}
+
+
+/* Extra Styles */
+
+/* Custom Cursor */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent-light-pink);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  mix-blend-mode: difference;
+  background: rgba(255, 192, 203, 0.5);
+  box-shadow: 0 0 8px 4px rgba(248, 215, 218, 0.4);
+  transition: transform 0.15s ease-out;
+}
+
+.custom-cursor:hover {
+  transform: scale(1.5);
+}
+
+/* Waving Emoji Animation */
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-10deg); }
+  40% { transform: rotate(12deg); }
+  60% { transform: rotate(-10deg); }
+  80% { transform: rotate(9deg); }
+}
+
+.animate-wave {
+  display: inline-block;
+  animation: wave 1.5s infinite;
+  transform-origin: 70% 70%;
+}
+
+/* Smooth Page Transition */
+html {
+  transition: background-color 0.5s ease, color 0.5s ease;
+  scroll-behavior: smooth;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.gradient-glow {
+  box-shadow: 0 8px 32px rgba(255, 182, 193, 0.15);
+}
+
+.gradient-glow-hover:hover {
+  box-shadow: 0 12px 40px rgba(255, 182, 193, 0.25);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.dark .gradient-glow {
+  box-shadow: 0 8px 32px rgba(147, 51, 234, 0.15);
+}
+
+.dark .gradient-glow-hover:hover {
+  box-shadow: 0 12px 40px rgba(147, 51, 234, 0.25);
+}
+
+main {
+  padding-top: 2.5rem;
+}
+
+/* More space below the hero image */
+.hero-image {
+  margin-bottom: 3rem; /* 48px */
+}
+
+/* Moderate space around screenshots */
+.screenshot-image {
+  margin: 1rem 0; /* 16px top & bottom */
+}
+
+section {
+  padding-top: 5rem;
+  padding-bottom: 4rem;
+}
+
+.featured-tag {
+  background-color: var(--accent-soft-rose);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+/* Magical "Back to Projects" link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  @apply bg-white/5 dark:bg-black/5;
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px; /* pill shape */
+  background: rgba(255, 255, 255, 0.05);
+  transition: color 0.3s ease, font-weight 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Arrow pill */
+.back-link .arrow {
+  font-weight: 700;
+  padding: 0.2rem 0.4rem;
+  background: var(--pastel-pink);
+  color: var(--foreground);
+  border-radius: 999px;
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+/* Hover style without GSAP (fallback) */
+.back-link:hover {
+  color: var(--accent-soft-rose);
+  font-weight: 600;
+  box-shadow: 0 0 12px var(--accent-soft-rose), 0 0 24px var(--pastel-pink);
+}
+
+.back-link:hover .arrow {
+  transform: translateX(-3px);
+}
+
+/* cute-link: reusable pastel pill button */
+.cute-link {
+  @apply inline-flex items-center px-3 py-0.5 rounded-lg text-sm font-medium transition-all duration-200;
+  background-color: var(--pastel-blue);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+
+.cute-link:hover {
+  background-color: var(--pastel-purple);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* project-card minor polish (optional) */
+.project-card {
+  background: linear-gradient(180deg, var(--card), var(--card));
+  backdrop-filter: blur(6px);
+}
+
+/* tag pastel palette */
+.tag-pink   { background: var(--pastel-pink); color: var(--foreground); }
+.tag-blue   { background: var(--pastel-blue); color: var(--foreground); }
+.tag-purple { background: var(--pastel-purple); color: var(--foreground); }
+.tag-green  { background: var(--pastel-green); color: var(--foreground); }
+.tag-yellow { background: var(--pastel-yellow); color: var(--foreground); }
+.tag-orange { background: var(--pastel-orange); color: var(--foreground); }
+
+/* global.css */
+.heading-cute {
+  @apply font-extrabold text-transparent bg-clip-text text-center tracking-tight;
+  @apply bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500;
+  font-size: clamp(2.5rem, 5vw, 4rem); /* responsive big text */
+  letter-spacing: -0.02em;
+}
+
+.heading-cute span {
+  @apply text-pink-700; /* for emojis or special words */
+}
+
+/* Contact Section */
+.contact-section {
+  max-width: 56rem; /* same as max-w-4xl */
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(to bottom right, #fff5f7, #ffffff, #faf5ff);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.dark .contact-section {
+  background: linear-gradient(135deg, #0b1220, #111827);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+
+/* Heading */
+.contact-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+.contact-heading span {
+  font-size: 1.5rem;
+}
+
+/* Form container */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form fields */
+.form-field {
+  position: relative;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3.5rem; /* left padding for icon */
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--input-background);
+  color: var(--foreground);
+  font-size: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: #6b7280;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--accent-soft-rose);
+  box-shadow: 0 0 0 2px rgba(232, 121, 249, 0.35);
+}
+
+.form-field input:hover,
+.form-field textarea:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* Icons */
+.form-field svg {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  transition: color 0.2s ease;
+  pointer-events: none;
+}
+
+.form-field textarea + svg {
+  top: 1.25rem; /* adjust for multi-line textarea */
+}
+
+.form-field:hover svg {
+  color: #ec4899;
+}
+
+/* Textarea */
+.form-field textarea {
+  resize: none;
+  height: 8rem;
+}
+
+/* Submit button */
+.contact-submit {
+  background: var(--accent-soft-rose);
+  color: var(--white);
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(232, 121, 249, 0.3);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-submit:hover {
+  background: var(--accent-light-pink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(240, 171, 252, 0.4);
 }
