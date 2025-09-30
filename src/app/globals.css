@@ -535,3 +535,311 @@ section {
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(240, 171, 252, 0.4);
 }
+
+
+/* Timeline specific styles */
+.timeline-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.timeline-card:hover {
+  transform: translateZ(10px);
+}
+
+.timeline-dot {
+  position: relative;
+  background: var(--card);
+}
+
+.timeline-dot::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--accent-soft-rose),
+    var(--pastel-purple),
+    var(--pastel-blue),
+    var(--accent-soft-rose)
+  );
+  animation: rotate 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+
+.timeline-dot:hover::before {
+  opacity: 0.5;
+}
+
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+/* Chatbot animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Modal backdrop blur */
+.modal-backdrop {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Stats card hover effect */
+.stats-card {
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Achievement badge pulse */
+@keyframes badge-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.achievement-badge {
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for chatbot */
+.chatbot-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f472b6, #a78bfa);
+  border-radius: 10px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ec4899, #8b5cf6);
+}
+
+/* Card flip animation */
+@keyframes card-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+.card-flip {
+  animation: card-flip 0.6s ease-in-out;
+}
+
+/* Glow effect on hover */
+.glow-on-hover {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.glow-on-hover::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(45deg, #f472b6, #a78bfa, #60a5fa);
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+
+.glow-on-hover:hover::before {
+  opacity: 0.7;
+}
+
+/* Particle animation */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10px, -10px);
+  }
+  50% {
+    transform: translate(-10px, -20px);
+  }
+  75% {
+    transform: translate(-10px, 10px);
+  }
+}
+
+.particle {
+  animation: particle-float 8s ease-in-out infinite;
+}
+
+/* Timeline line animation */
+.timeline-line {
+  background: linear-gradient(
+    180deg,
+    rgba(244, 114, 182, 0.8),
+    rgba(167, 139, 250, 0.8),
+    rgba(96, 165, 250, 0.8)
+  );
+  position: relative;
+}
+
+.timeline-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: line-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes line-shimmer {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Button magnetic effect */
+.btn-magnetic {
+  transition: transform 0.2s ease;
+}
+
+.btn-magnetic:hover {
+  transform: scale(1.05);
+}
+
+/* Progress bar shimmer */
+@keyframes progress-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.progress-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--accent-soft-rose) 0%,
+    var(--pastel-purple) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    var(--pastel-purple) 75%,
+    var(--accent-soft-rose) 100%
+  );
+  background-size: 200% 100%;
+  animation: progress-shimmer 2s linear infinite;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-card {
+    transform: none !important;
+  }
+  
+  .stats-card {
+    transform: none !important;
+  }
+}
+
+/* Dark mode enhancements */
+.dark .timeline-card {
+  background: rgba(17, 24, 39, 0.6);
+}
+
+.dark .timeline-dot {
+  background: #1f2937;
+}
+
+.dark .glow-on-hover::before {
+  filter: blur(15px);
+}
+
+/* Accessibility improvements */
+.focus-visible:focus {
+  outline: 2px solid var(--accent-soft-rose);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, textarea, select {
+  transition: all 0.2s ease;
+}
+
+/* Loading animation for async operations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}

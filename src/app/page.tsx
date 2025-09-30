@@ -5,9 +5,20 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Navbar from './components/Navbar';
+
+// Import new components
+import InteractiveTimeline from './components/InteractiveTimeline';
+import DetailModal from './components/DetailModal';
+import AIChatbot from './components/AIChatbot';
+import ChatbotButton from './components/ChatbotButton';
+// import DownloadCVButton from './components/DownloadCVButton';
+
 import SkillsSection from './components/SkillsSection';
 import ProjectPreview from './components/ProjectPreview';
 import DownloadCVButton from './components/DownloadCVButton';
+import ExperienceSection from './components/ExperienceSection';
+import Education from './components/Education';
+import ContactForm from './components/ContactForm';
 import Link from 'next/link';
 import { FaRegHandPaper } from 'react-icons/fa';
 import { FiArrowRight } from 'react-icons/fi';
@@ -15,17 +26,41 @@ import { FiArrowRight } from 'react-icons/fi';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  // const containerRef = useRef<HTMLDivElement>(null);
+  // const textRef = useRef<HTMLDivElement>(null);
+  // const imageRef = useRef<HTMLDivElement>(null);
+  // const bgGlowRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<HTMLDivElement[]>([]);
+  // const progressRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const ctaRefs = useRef<HTMLAnchorElement[]>([]);
+  // const [positions, setPositions] = useState<{ top: string; left: string }[]>([]);
+
+
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const bgGlowRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const particlesRef = useRef<HTMLDivElement[]>([]);
   const progressRef = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const ctaRefs = useRef<HTMLAnchorElement[]>([]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
   const [positions, setPositions] = useState<{ top: string; left: string }[]>([]);
+  const [stats, setStats] = useState({
+    experience: 3,
+    projects: 6,
+    skills: 15,
+    achievements: 0
+  });
 
+
+  const handleTimelineItemClick = (item: any) => {
+    setSelectedItem(item);
+    setShowModal(true);
+  };
   useEffect(() => {
     // Generate random positions once, after client mounts
     setPositions(
@@ -360,12 +395,32 @@ export default function Home() {
         </div>
 
         <SkillsSection /> 
-        {/* <ProjectPreview /> */}
+        <ProjectPreview />
         <DownloadCVButton />
         {/* <Footer /> */}
         {/* Custom cursor */}
         <div ref={cursorRef} className="custom-cursor hidden md:block" />
+      {/* Interactive Timeline Section */}
+      <InteractiveTimeline onItemClick={handleTimelineItemClick} />
 
+      {/* Detail Modal */}
+      <DetailModal 
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        item={selectedItem}
+      />
+
+      {/* AI Chatbot */}
+      <AIChatbot 
+        isOpen={showChatbot}
+        onClose={() => setShowChatbot(false)}
+      />
+
+      {/* Chatbot Button */}
+      <ChatbotButton 
+        onClick={() => setShowChatbot(true)}
+        isOpen={showChatbot}
+      />
       </div>
 
       {/* Tech stack marquee */}
@@ -375,6 +430,30 @@ export default function Home() {
             {['React', 'Next.js', 'TypeScript', 'Node.js', 'NestJS', 'Tailwind', 'GSAP', 'PostgreSQL', 'Redis', 'Docker', 'Prisma', 'Jest'].map((tech, i) => (
               <span key={`marquee-${i}`} className="mx-6 text-sm md:text-base font-medium text-[var(--muted-foreground)]">{tech}</span>
             ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Experience Section */}
+      <section id="experience" className="w-full">
+        <div className="w-full max-w-7xl mx-auto px-4">
+          <ExperienceSection />
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section id="education" className="w-full">
+        <div className="w-full max-w-7xl mx-auto px-4">
+          <Education />
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 py-16">
+          <div className="contact-section">
+            <h2 className="contact-heading">Let’s build something great together <span>✨</span></h2>
+            <ContactForm />
           </div>
         </div>
       </section>
